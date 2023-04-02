@@ -102,9 +102,17 @@ publicApp.get(
   }
 );
 
+publicApp.listen(3000, () => {
+  console.log("Public app listening on port 3000");
+});
+
 // This app will be exposed internally to validate authentication on requests forwarded by nginx
 const privateApp = createApp();
 
 privateApp.get("/", passport.authenticate("google"), (req, res) => {
   res.status(200).end("OK");
+});
+
+privateApp.listen(3001, () => {
+  console.log("Private app listening on port 3001");
 });

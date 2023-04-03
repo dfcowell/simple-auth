@@ -78,8 +78,11 @@ publicApp.get(
 
     if (
       !redirectUrl.host.endsWith(process.env.COOKIE_DOMAIN) ||
-      redirectUrl.protocol !== "https"
+      redirectUrl.protocol !== "https:"
     ) {
+      console.log(
+        `Invalid returnTo query parameter: ${req.query.returnTo}; ${redirectUrl.host}, ${redirectUrl.protocol}`
+      );
       return res.status(400).send("Invalid returnTo query parameter");
     }
 

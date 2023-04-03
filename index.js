@@ -13,7 +13,7 @@ const redisClient = createClient({
 redisClient.connect().catch(console.error);
 
 // set up session store
-const RedisStore = require("connect-redis");
+const RedisStore = require("connect-redis").default;
 const sessionStore = new RedisStore({ client: redisClient });
 
 // set up passport

@@ -60,7 +60,6 @@ const createApp = () => {
   const app = express();
 
   // set up middleware required by passport
-  app.use(express.bodyParser());
   app.use(sessionMiddleware);
   app.use(passportMiddleware);
 

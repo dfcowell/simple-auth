@@ -77,8 +77,11 @@ publicApp.get(
       return res.status(400).send("Missing returnTo query parameter");
     }
 
+    const redirectUrl = new URL(req.query.returnTo);
+
     if (
-      !req.query.returnTo.startsWith(`https://${process.env.COOKIE_DOMAIN}`)
+      !redirectUrl.host.endsWith(process.env.COOKIE_DOMAIN) ||
+      redirectUrl.protocol !== "https"
     ) {
       return res.status(400).send("Invalid returnTo query parameter");
     }

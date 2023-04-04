@@ -50,7 +50,12 @@ const sessionMiddleware = session({
   secret: process.env.SESSION_SECRET,
   resave: true,
   saveUninitialized: true,
-  cookie: { secure: true, maxAge: 60000, domain: process.env.COOKIE_DOMAIN },
+  cookie: {
+    secure: true,
+    maxAge: 60000,
+    domain: process.env.COOKIE_DOMAIN,
+    sameSite: "none",
+  },
 });
 const passportMiddleware = passport.session();
 

@@ -103,19 +103,21 @@ publicApp.get(
   passport.authenticate("google", { scope: ["email", "profile"] })
 );
 
-publicApp.get(
-  "/oauth2/redirect/google",
-  passport.authenticate("google"),
-  (req, res) => {
-    console.log(req.session);
-    console.log(req.session.returnTo);
-    if (req.session.returnTo) {
-      return res.redirect(req.session.returnTo);
+publicApp.get("/oauth2/redirect/google", (req, res) => {
+  if (!req.session.returnTo) {
+    return res.status(500).end("Internal error");
+  }
+
+  const redirectUrl = new URL(req.session.returnTo);
+
+  passport.authenticate("google", (err, user) => {
+    if (err) {
+      return res.status(401).end("Unauthorized");
     }
 
-    res.status(500).end("Internal error");
-  }
-);
+    res.redirect(redirectUrl);
+  });
+});
 
 publicApp.listen(3000, () => {
   console.log("Public app listening on port 3000");

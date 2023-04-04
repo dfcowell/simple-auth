@@ -90,7 +90,7 @@ publicApp.get(
 
     next();
   },
-  passport.authenticate("google")
+  passport.authenticate("google", { scope: ["email", "profile"] })
 );
 
 publicApp.get(

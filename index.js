@@ -132,7 +132,7 @@ publicApp.listen(3000, () => {
 // This app will be exposed internally to validate authentication on requests forwarded by nginx
 const privateApp = createApp("private");
 
-privateApp.get("/", (req, res) => {
+privateApp.use((req, res) => {
   if (req.user) {
     return res.status(200).end("OK");
   }

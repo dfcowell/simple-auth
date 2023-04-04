@@ -3,6 +3,7 @@ const express = require("express");
 const passport = require("passport");
 const session = require("express-session");
 const { createClient } = require("redis");
+const morgan = require("morgan");
 
 // Connect to redis
 const redisClient = createClient({
@@ -59,7 +60,7 @@ const sessionMiddleware = session({
 });
 const passportMiddleware = passport.session();
 
-const createApp = () => {
+const createApp = (name) => {
   const app = express();
 
   if (process.env.NUMBER_OF_REVERSE_PROXIES) {
@@ -70,12 +71,17 @@ const createApp = () => {
   // set up middleware required by passport
   app.use(sessionMiddleware);
   app.use(passportMiddleware);
+  app.use(
+    morgan(
+      `[${name}] :remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"`
+    )
+  );
 
   return app;
 };
 
 // This app will be exposed to the public to handle authentication
-const publicApp = createApp();
+const publicApp = createApp("public");
 
 publicApp.get(
   "/login",
@@ -124,7 +130,7 @@ publicApp.listen(3000, () => {
 });
 
 // This app will be exposed internally to validate authentication on requests forwarded by nginx
-const privateApp = createApp();
+const privateApp = createApp("private");
 
 privateApp.get("/", (req, res) => {
   if (req.user) {

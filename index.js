@@ -116,7 +116,7 @@ publicApp.get("/oauth2/redirect/google", (req, res) => {
     }
 
     res.redirect(redirectUrl);
-  });
+  })(req, res);
 });
 
 publicApp.listen(3000, () => {

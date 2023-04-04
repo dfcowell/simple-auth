@@ -121,7 +121,13 @@ publicApp.get("/oauth2/redirect/google", (req, res) => {
       return res.status(401).end("Unauthorized");
     }
 
-    res.redirect(redirectUrl);
+    req.login(user, (err) => {
+      if (err) {
+        return res.status(401).end("Unauthorized");
+      }
+
+      res.redirect(redirectUrl);
+    });
   })(req, res);
 });
 

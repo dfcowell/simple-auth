@@ -133,6 +133,8 @@ publicApp.listen(3000, () => {
 const privateApp = createApp("private");
 
 privateApp.use((req, res) => {
+  console.log(req.session);
+  console.log(req.user);
   if (req.user) {
     return res.status(200).end("OK");
   }

@@ -53,7 +53,9 @@ const sessionMiddleware = session({
   saveUninitialized: true,
   cookie: {
     secure: true,
-    maxAge: 60000,
+    maxAge: process.env.COOKIE_MAX_AGE
+      ? parseInt(process.env.COOKIE_MAX_AGE, 10)
+      : 60000,
     domain: process.env.COOKIE_DOMAIN,
     sameSite: "none",
   },
@@ -139,8 +141,6 @@ publicApp.listen(3000, () => {
 const privateApp = createApp("private");
 
 privateApp.use((req, res) => {
-  console.log(req.session);
-  console.log(req.user);
   if (req.user) {
     return res.status(200).end("OK");
   }

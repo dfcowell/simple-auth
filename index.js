@@ -77,14 +77,6 @@ const createApp = () => {
 // This app will be exposed to the public to handle authentication
 const publicApp = createApp();
 
-publicApp.use(async (req, res, next) => {
-  console.log(req.session);
-
-  await next();
-
-  console.log(req.session);
-});
-
 publicApp.get(
   "/login",
   (req, res, next) => {
@@ -115,6 +107,8 @@ publicApp.get(
   "/oauth2/redirect/google",
   passport.authenticate("google"),
   (req, res) => {
+    console.log(req.session);
+    console.log(req.session.returnTo);
     if (req.session.returnTo) {
       return res.redirect(req.session.returnTo);
     }

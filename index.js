@@ -57,6 +57,9 @@ const passportMiddleware = passport.session();
 const createApp = () => {
   const app = express();
 
+  // trust one layer of reverse proxies
+  app.set("trust proxy", 1);
+
   // set up middleware required by passport
   app.use(sessionMiddleware);
   app.use(passportMiddleware);

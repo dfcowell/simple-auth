@@ -77,6 +77,14 @@ const createApp = () => {
 // This app will be exposed to the public to handle authentication
 const publicApp = createApp();
 
+publicApp.use(async (req, res, next) => {
+  console.log(req.session);
+
+  await next();
+
+  console.log(req.session);
+});
+
 publicApp.get(
   "/login",
   (req, res, next) => {
